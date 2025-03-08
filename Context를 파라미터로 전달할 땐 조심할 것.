@@ -35,13 +35,13 @@
 
   그런데 잠깐,
 
-![StudyLog](StudyLogImages/2025030801.png)
+![StudyLog](https://github.com/hodakrer/StudyLogImages/blob/main/2025030801.png)
 
   우린 AppCompatActivity가 더 익숙하다.
 
   그럼 AppCompatActivity와 Context의 관계는 무엇일까?
 
-![StudyLog](StudyLogImages/2025030802.png)
+![StudyLog](https://github.com/hodakrer/StudyLogImages/blob/main/2025030802.png)
 
   역시 구글 공식 DOC이다. 척하면 척 나오는구나!
 
