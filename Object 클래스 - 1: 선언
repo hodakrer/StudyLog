@@ -1,0 +1,84 @@
+배경:
+  처음 레트로핏 라이브러리를 쓸 무렵. 멋도 모르고 레트로핏 인스턴스(class)를 액티비티 이곳 저곳에 생성했다.
+  그러나 곧 '이건 이상한데?'라는 생각이 들었다.
+  아아, 10년 전 선배가 "큭큭, 이거 면접에 나오니 외워라." 하며 알려준 키워드가 떠오르려 한다!
+  "아하! 싱글톤!!"
+
+본론:
+
+  object 키워드는 싱글톤을 쉽게 구현하도록 도와주는 객체다.
+  object 객체는 선언과 동시에 생성된다.
+  그렇게 생성된 객체는 전역에 하나만 유지된다!
+  예를 들어 object RetrofitInstance를 받은 두 객체를 만들어보자.
+  그리고 retrofitInstanceA == retrofitInstanceB 라 하면?
+  정답은 true다!
+  왜냐하면 object RetrofitInstance는 클래스와 달리 선언과 객체 생성을 같이 한다!
+  val retrofitInstanceA = RetrofitInstance
+  val retrofitInstanceB = RetrofitInstance
+  하면 두 val 객체는 같은 oject를 가리키게 된다!
+
+
+공식 독스:
+
+  https://kotlinlang.org/docs/object-declarations.html#object-declarations-overview
+
+
+object 선언:
+
+  object 선언 시 클래스 선언과 객체 생성이 동시에 이뤄진다.
+  또한 object 객체 참조 시, 그냥 object 선언 시 쓴 이름을 바로 쓰면 된다!
+  (그러니까 굳이 매번 val a = RetrofitInstance를 안해도 된다는 뜻이다!)
+
+  또한 object 선언 시 클래스처럼 인터페이스나 다른 클래스를 상속받을 수 있다.
+  (Docs에선 '슈퍼타입'을 가질 수 있다고 표현했다.)
+
+  그리고 object 선언도 변수 선언처럼 expression이 아니니 우측 변에 적는 실수는 저지르지 말 것.
+  (ex: val a = object RetrofitInstanccr { } )
+
+  4째 정보, println(object 객체) 시 객체 이름과 해시값이 붙여서 출력된다.
+  (출력: RetrofitInstance@397813)
+  (엄청 세세하게 다 얘기해준다)
+
+  5째 정보, data object로 선언하면 println(data object 객체) 시 객체 이름만 출력된다.
+  (출력: RetrofitInstance)
+
+  6째 정보, data object는 data class처럼 컴파일러가 toString(), equals(), hashCode() 함수도 자동으로 만들어준다.
+  (다시 한번 느끼지만 정말 세세하게 다 얘기해주는구나)
+
+  7번째 정보. Make sure that you only compare data objects structurally (using the == operator) and never by reference (using the === operator).
+  This helps you to avoid pitfalls when more than one instance of a data object exists at runtime.
+  여기서 pitfalls이 뭘까. 검색해보니 함정이라고 한다.
+  그러니까 data object에 ==(.equals)연산을 하면, 내부 값이 같으면 실제로 다른 주소를 가진 다른 객체여도 true라 반환된다는 뜻이다!
+  즉, 진짜 '동일한' 걸 가리키는지 알고싶으면 ===연산을 해야한다.
+
+  8번째 정보. data class와 data object의 다른 점은 2가지다.
+  첫째, data class는 구조분해가 된다. a, b = Person() 할 수 있다.
+  그러나 data object는 안 된다. a, b = Person() 이 불가능하다!
+  data class가 이게 왜 가능했냐면, 저 연산에서 componenta()와 componentb()가 생성되었기 때문이다!
+  (설마 파이썬도 그래서 된건가?!)
+
+  둘째, .copy()가 없다. 이건 당연하다. object는 하나뿐이니까!
+
+  9번째 정보. data class와 data object는 '코드 대칭성'이 있다.
+  여기서 대칭성이란 코드 작성에 적용되는 규칙이 비슷해서 코드를 비슷하게 짤 수 있다는 뜻이다.
+  공식 docs에선 sealed class(같은 파일에서만 상속할 수 있는 슈퍼타입)와 함께 쓰라고 한다.
+  특히 객체 생성에 이것저것 제한을 둬서 '코드 대칭성'을 강요할 수 있기 때문이라고 한다.
+  (이런 수준의 코드까지 짜본 적은 없지만 코드 작성 시 안정성이 올라갈 것 같다)
+
+  10번째 정보! companion + object도 만들 수 있다!
+  잠깐! 그런데 companion은 뭔가!
+  어려운 말로는 클래스 레벨 정적 변수라는데...
+  풀어 말하자면 class객체도 안 만들고 class 이름만 써서 가져올 수 있는 변수다.
+  즉, companion object면 class 객체도 안 만들고 class 이름만 써서 바로 가져올 수 있는 object 객체다!
+
+  예시: class AA{ companion object aa}
+       val foo = AA.aa
+  
+
+  후기: 공식 Docs는 엄청나구나. 고농축 영양액을 동맥에 바로 꽂은 기분이다.
+  하지만 그만큼 시간도 오래 걸린다. object표현은 내일 정리해야겠다.
+
+
+
+object 표현:
+
