@@ -1,0 +1,141 @@
+[16. 문장(Statement)]
+
+  문장이란?
+  -> 독립적으로 실행가능한 코드 조각.
+
+  독립적인 문장이란?
+  -> 실행시 다른 줄의 코드와 연관되지 않은 코드.
+
+  println(
+      num + 7 * 3
+  )
+  의 문장 갯수?
+  -> 1개. 첫 줄의 println(은 num + 7 * 3, )와 연관됨.
+
+  val num : Int = 7; val character : Char = 'a'
+  의 문장 갯수?
+  -> 2개. ;를 기준으로 각자 독립적으로 실행 가능한 코드임.
+
+
+[17. 비교연산자]
+
+  a == b는?
+  -> a의 값과 b의 값이 같으면 true, 아니면 false를 출력하는 연산자
+
+  그럼 a와 b가 같은 참조값을 가지는지 판단할 때 쓰는 연산자는?
+  -> a === b 또는 a !== b
+
+  0.01f == 0.1f * 0.1f 의 결과값은?
+  -> false. 왜냐면 실수를 연산하면 오차가 생기기 때문이다!
+
+
+[18. 논리연산자]
+
+  a&&b는?
+  -> a와 b의 값이 둘 다 true 여야 true 반환.
+
+  a||b는?
+  -> a와 b 중 하나만 true면 true 반환.
+
+
+[19. if]
+
+  if문의 구조?
+  -> if (true/false로 반환하는 조건식) {
+         statements
+     }
+
+  if문 속 statement가 1개라면?
+  -> {}생략 가능
+  -> if (조건문) statements
+
+
+[20. if - else]
+
+  if - else문의 구조?
+  -> if( ) {
+         statements
+     } else {
+         statements
+     }
+
+
+[21. if else 중첩]
+
+  if (  ) {
+
+  } else
+        if ( ) {
+
+        }
+  는 맞는 구조인가?
+  -> Yes! if() {}는 온전한 하나의 statement이다.
+  -> 하나의 statement면 {}는 생략가능하다!
+
+
+[22. if else를 expression으로]
+
+  expression이란?
+  ->하나의 결과값을 반환하는 코드
+
+  val a : Int = if(true) print('a') else print('b')
+  print(a)
+  하면 무슨 결과가 나오나?
+  -> error!
+  -> print('a')는 expression(표현식)이 아니다.
+  -> {} 속 마지막 statement가 expression이 아니면, Unit 타입을 출력한다.
+  -> 그런데 a는 Int이니 타입 불일치 error.
+
+  val a : Unit = if(true) print('a') else print('b')
+  print(a)
+  하면 무슨 결과가 나오나?
+  -> aKotlin.Unit
+  -> 먼저 true라 a가 줄바꿈없이 출력되고, 바로 뒤이어 a의 Unit타입 아무값인 Kotlin.Unit이 출력된다.
+
+  Kotlin.Unit이란?
+  -> Kotlin 속 하나뿐인 싱글턴 객체. void와는 다르다!
+
+  왜 Kotlin은 void가 없나?
+  -> 코틀린은 <모든 함수가 표현식> 이기에, 없음을 반환할 수는 없다. 그래서 나온 대체제가 Kotlin.Unit이다.
+
+  <모든 함수가 표현식>이란 명제가 뭔 의미가 있나?
+  -> void는 진짜 아무 것도 없다는 뜻.
+  -> 초기화하는데 아무 것도 반환하지 않으면 null 안전성이 떨어진다!
+  -> 고차함수를 사용하는데 유용하다.
+
+  고차함수란?
+  -> 함수를 인자/출력으로 사용하는 함수.
+  -> 예를 들어 map이나 let, apply도 고차함수다.
+  (다른 챕터에서 자세히 후술 예정)
+
+
+[23. when]
+
+  when이란?
+  -> C언어 switch문처럼 다중 분기문.
+
+  when의 구조?
+  -> when (조건식. 꼭 true/false가 아녀도 된다) {
+      'a'  -> {statement}
+      6    -> 'b'
+      else -> {나머지 케이스에 대한 statement}
+  }
+
+
+[24. when을 expression으로!]
+
+  val a : Int = when (조건식) {
+      1 -> 'A'
+      2 -> 'B'
+      3 -> 'C'
+      else -> 'Z'
+  }
+
+
+[25. while]
+
+  while(true/false 조건식) {
+      statement
+  }
+
+  
