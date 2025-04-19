@@ -1,0 +1,93 @@
+[26. do while]
+
+  do while과 while의 차이?
+  -> 일단 1번하고 조건 검사. 그 후 반복할 지 끝날 지 판단.
+
+  do while 사용법?
+  -> do {
+         statement
+     } while(i < 5)
+
+
+[27. continue] https://kotlinlang.org/docs/returns.html
+
+  continue란 흐름 제어문은?
+  -> 반복문 내부에서 아래 문장을 건너뛸 수 있는 키워드
+
+  continue사용 시 코드 흐름?
+  -> continue 아래 코드는 무시하고 반복문의 가장 위로 이동.
+
+
+[28. break]
+
+  break와 continue 차이?
+  -> break는 아래 문장을 무시하고 반복문 밖으로 나옴.
+  -> continue는 아래 문장을 무시하고 반복문 위로 돌아감.
+
+
+[29. Label] 
+
+  Label이 반복문에서 쓰일 때 효용?
+  -> break는 필연적으로 가장 안쪽 반복문 하나만 빠져나온다.
+  -> Label은 특정코드 위치로 이동할 수 있다.
+
+  Label을 무어라 이해하면 되나?
+  -> Expression에 이름을 붙인다.
+
+  fun foo1() {
+    listOf(1, 2, 3, 4, 5).forEach lit@{
+        if (it == 3) return@lit // 람다식(forEach loop)에 대한 local return
+        print(it)
+    }
+    print("명시적 label을 사용한 코드")
+  }
+  의 결과는?
+  -> 1245명시적 label을 사용한 코드
+
+  왜 결과가 4, 5까지 이어지나?
+  -> 원래 3이면 return해야한다.
+  -> 그러나 return으로 lit@{ }으로 돌아와 해당 expression을 실행하기 때문에 4, 5가 나올 수 있었다.
+
+  fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach {
+        if (it == 3) return@forEach // local return to the caller of the lambda - the forEach loop
+        print(it)
+    }
+    print(" done with implicit label")
+  }
+  의 결과는?
+  -> 1245애done with implicit label
+
+  위의 코드는 @forEach를 listOf 앞에 붙이지 않았는데 왜 저런 결과가 나왔나?
+  label을 명시하지 않았을 경우, 이 람다식에 다시 진입한다. (= caller에게 돌아간다).
+
+  fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach(fun(value: Int) {
+        if (value == 3) return  // local return to the caller of the anonymous function - the forEach loop
+        print(value)
+    })
+    print(" done with anonymous function")
+  }
+  의 결과는?
+  -> 위와 동일. 람다식뿐만 아니라 익명함수에서도 똑같이 적용된다.
+
+  위에서처럼, Label은 무슨 키워드가 비슷한 기능을 할 수 있나?
+  ->continue
+
+
+[30. 함수]
+
+  함수 선언 시 양식?
+  -> fun 식별자( 파라미터 ) : 반환타입 { statement }
+
+  println(calculate(a, b))
+  함수 prinln과 그 안에서 실행되는 함수 calculate이 있다면, 둘 중 뭐가 먼저 실행되나?
+  -> 가장 안쪽에 있는 함수인 함수 calculate
+
+  코틀린에선 함수호출도 표현식인가?
+  -> Yes. 아무것도 return 안해도 Kotlin.Unit을 반환한다.
+
+  함수 선언시 리턴 타입을 안 적어도 Kotlin.Unit을 반환하나?
+  -> Yes.
+
+  
