@@ -1,0 +1,230 @@
+[51. ===, !== 연산자]
+
+  ===연산자와 ==연산자의 차이?
+  -> ===연산자는 두 참조변수가 같은 객체를 가리키냐에 대한 true/false
+  -> == 연산자는 두 참조변수가 가리키는 객체의 값이 같냐에 대한 true/false
+
+
+  a라는 참조변수는 c를 가리키고, c의 값은 3이다.
+  b라는 참조변수는 d를 가리키고, d의 값은 3이다.
+  a === b와 a == b의 결과값은?
+  -> a === b는 true
+  -> a ==  b는 false
+
+
+  a라는 참조변수는 상수인 "hello"를 가리키고,
+  b라는 참조변수는 상수인 "hello"를 가리킨다.
+  a === b와 a == b의 결과값은?
+  -> a === b는 true(힙에서 동일한 객체인 "hello")
+  -> a ==  b는 true(같은 값인 "hello")
+
+
+  a라는 참조변수는 상수인 "hell"을 가리킨다.
+  그리고 concatenate으로 + "o"를 하여 "hello"라는 값을 가리키게 만들었다.
+  b라는 참조변수는 상수인 "hello"를 가리킨다.
+  a === b와 a == b의 결과값은?
+  -> a === b는 false("hell" + "o"는 힙영역에서 새로 만들어진 값이다. 기존의 "hello"와는 달라 메모리적 낭비다)
+  -> a ==  b는 true(같은 값인 "hello"를 가진다)
+
+
+  이 때 힙 영역에 있는 모든 변수를 나열하시오.
+  -> "hell", "o", "hello" (concatenate해서 만들어진 값), "hello" (b를 위해 처음부터 생성된 "hello"값)
+
+
+  자바에서 코틀린의 ===과 ==에 대응하는 연산자/함수는?
+  -> ===는 ==이다.
+  -> ==는 a.equals(b)다.
+
+
+
+[52. 맴버함수]
+
+  맴버함수란?
+  -> 클래스 내에 선언된 함수이다.
+
+
+  왜 그냥 함수가 아니라 맴버함수를 만드나?
+  -> 특정 클래스와 강하게 연관된 경우.
+  -> 예를 들어 auth.login(id, passowrd)
+
+
+  class Building {
+    var name = "Doosan"
+    fun print_name() {
+      println(this.name)
+    }
+  }
+  여기서 this가 가리키는 건?
+  -> 이 맴버함수를 가진 클래스 객체
+
+
+  위에서 this는 생략가능한가?
+  -> Building객체를 가리키는 의도라면 Yes.
+
+
+  객체의 정의 중 "객체가 동작을 가진다"는 말이 있다.
+  여기서 동작이란?
+  -> 맴버함수
+
+
+[53. 프로퍼티와 맴버 함수의 매개변수 이름이 중복되는 경우]
+
+  class Building {
+    var name = "Doosan"
+    fun print_name(name: String){
+      print(name)
+      print(this.name)
+    }
+  }
+  위에서 name과 this.name의 차이?
+  name은 파라미터로 받은 name 출력.
+  this.name은 객체가 가진 name = "Doosan" 출력.
+
+
+[54. 생성자와 초기화블록]
+
+  왜 초기화블록이 필요한가?
+  -> 객체 생성할 때마다 매번 프로퍼티 값 채우기 귀찮아서.
+
+
+  쓰는 법?
+  ->함수 내에 init { } 블록 안에 this.name = name 처럼 채워넣으면 된다.
+
+
+  class Building constructor (name: String) {
+    var name: String
+    init {
+      this.name = name
+    }
+  }
+  위에서 constructor는 지워도 되나?
+  ->된다.
+
+
+[55. init 블록을 나눌 수 있을까?]
+
+  init은 어떻게 나눠쓸 수 있나?
+  ->init {
+      this.name = name
+    }
+    init {
+      this.height = height
+    }
+
+  
+[56. 생성자와 프로퍼티 한번에 쓰기]
+
+  프로퍼티 선언문과 생성자 정의문에서 비슷한 코드가 반복된다.
+  어떻게 줄일까?
+  ->
+    class Building(var name: String, var height: Int = 200)
+    fun main(args: Array<String>){
+      var doosan = "Doosan"
+      val building = Building(doosan)
+      println(building.name)
+      println(building.height)
+    }
+    매개변수 정의할 때 var이나 val을 붙이면 동일한 이름의 프로퍼티가 선언된다.
+    딱 저 한줄인 class 정의문으로 init을 쓸 필요없이 초기화 가능하다.
+    객체에 val을 쓰면 저렇게 초기화한 값 그대로 고정된다.
+    물론, var인 doosan 값을 바꾸면 val building 속 name이 나타내는 값도 바뀐다.
+    name이 똑같이 doosan 변수를 가리키지만 doosan 변수의 값은 바뀌었기 때문이다.
+
+
+[57. 보조 생성자]
+
+  왜 쓰나?
+  -> 보조 생성자는 여러 param 타입에 대응할 수 있다.
+  -> 예를 들어 클래스의 param이 val second : Int일 때,
+  -> 보조 생성자로 constructor(hour: Int, minute: Int, second: int): this(hour * 360 + minute * 60 + second)
+  -> 라고 하면 파라미터에 대해 유연한 class를 만들 수 있다.
+
+
+  쓸 때 주의점?
+  -> 주 생성자(init)이 존재한다면 보조 생성자(constructor)보다 무조건 앞에 써야한다.
+  -> 주 생성자가 없다면 상관 없다.
+  어떻게 쓰나?
+
+
+[58. 프로퍼티의 getter/setter]
+
+  프로퍼티란?
+  -> 클래스에 묶이는 변수
+
+
+  프로퍼티에 자동 포함되는 함수들?
+  -> get() {   }
+  -> set() {   }
+
+
+  근데 왜 딱히 써본 기억이 없지?
+  -> building.name = "Doosan" 하면
+  -> building.name.get()이라 컴파일러가 알아서 변환
+  -> println(building.name) 하면
+  -> println(building.name.set())이라 컴파일러가 알아서 변환
+
+
+  get(), set()을 내가 구체적으로 커스터마이징하고 싶다면?
+  -> var name = "Doosan"
+      get() {
+        return "Doosan Bears!"
+      }
+      set(value) {
+        height = value
+      }
+
+
+[59. 연산자 오버로딩]
+
+  클래스 단위에서 연산자를 쓸 수 있을까?
+  예를 들어 building1 + building2처럼 말이다.
+  -> Yes! 연잔자 오버로딩!
+    class Building(var name: String, var height: Int){
+      operator fun plus(other: Building){
+        return Building(name + other.name, height + other.height)
+      }
+    }
+
+
+  연산자 오버로딩은 +, - 같은 부호를 쓰지 않았는데 어떻게 가능한가?
+  -> plus, minus, times, div처럼 정해진 식별자가 있다.
+  -> 다른 이름으로 쓰면 컴파일러는 당연히 못 알아듣는다.
+
+
+  또 다른 정해진 식별자는 있는가?
+  -> -a: unaryMinus 음수로 바꿈.
+  -> +a: unaryPlus  양수로 바꿈.
+  -> !a: not        true/false 바꿔줌.
+  -> a%b: rem       나머지 반환
+  -> (위 연산자의 반환타입은 아무거나)
+  -> a+=b: plusAssign
+  -> -=  : minusAssign
+  -> (times, div, rem도 마찬가지)
+  -> (위 이항연산자의 반환타입은 Unit이다!)
+
+
+[60. 번호 붙은 접근 연산자 [] ]
+
+  a[]이란?
+  -> 객체a의 값 일부 추출하는데 쓰임.
+
+
+  []연산자의 형태란?
+  -> 표현식[표현식]
+
+
+  []연산자를 class의 get으로 building[0]은 this.name, building[1]은 this.height을 반환하게 하라
+  -> class Building(var name: String, var height: Int) {
+      operator fun get(position: Int): String{
+        return when(position) {
+          0 -> name
+          1 -> birthday
+          else -> "이 인덱스에 해당하는 값은 없습니다."
+        }
+      }
+  }
+
+
+위에 만든 클래스로 building 객체의 name과 height을 "Hanhwa", 100으로 바꾸시오.
+-> building[0] = "Hanhwa"
+-> building[1] = 100
