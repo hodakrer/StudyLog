@@ -1,0 +1,131 @@
+[61. 호출연산자]
+
+클래스 정의할 때 내부 함수에 operator 키워드를 쓰면 어떻게 되나?
+  -> 인스턴스.함수(파라미터) 대신 인스턴스.(파라미터)로 줄여쓸 수 있다.
+
+
+이걸 왜 쓰나?
+  -> 보일러플레이트. 코드 간결성.
+
+
+쓰는 예시?
+  -> 벡터 연산을 구현한 코드.
+  data class Vec2(val x: Int, val y: Int) {
+      operator fun plus(other: Vec2): Vec2 = Vec2(x + other.x, y + other.y)
+      operator fun minus(other: Vec2): Vec2 = Vec2(x - other.x, y - other.y)
+      operator fun times(scalar: Int): Vec2 = Vec2(x * scalar, y * scalar)
+  }
+
+  val a = Vec2(2, 3)
+  val b = Vec2(1, 4)
+  
+  val result = a + b        // Vec2(3, 7)
+  val scaled = a * 3        // Vec2(6, 9)
+  val diff = a - b          // Vec2(1, -1)
+
+  plus, minus, times가 +, *, -로 되는 건 코틀린의 자동매핑 덕분이다.
+
+
+[62. in 연산자]
+
+특정 값이 해당 객체에 있는 지 확인하는 연산자는?
+  -> in
+
+
+사용법은?
+  -> "a" in "apple"
+
+
+출력값은?
+  -> 존재하면 true, 아니면 false
+
+
+반대로 안에 없는 걸 true로 받고 싶다면?
+  -> "a" !in "apple"
+
+
+[63. 맴버함수의 중위표기법]
+
+중위표기법이란?
+  -> 피연산자, 연산자, 피연산자 순으로 나오는 표기법.
+  -> 연산자가 중간에 있다.
+
+
+사용법은?
+  -> infix fun <T> T.shouldEqual(expected: T) {
+      if (this != expected) {
+          throw AssertionError("Expected $expected but got $this")
+      }
+    }
+
+
+굳이 왜 쓰나?
+  -> 간결성. 읽기 편함.
+  -> 실제 사용 시 영어문장처럼 읽게 됨.
+
+
+실제 사용예시?
+  -> fun testSum() {
+      val sum = 3 + 4
+      sum shouldEqual 7    // 자연어처럼 읽힘
+    }
+  -> sum shouldEqual 7 부분은 영어문장처럼 읽힌다.
+  -> 본래는 assertEquals(7, sum)라고 써야한다.
+
+
+[64. 상속]
+
+상속이란?
+  -> 기존 클래스 사용하여 새 클래스 만드는 방식.
+
+
+상속에 필요한 키워드?
+  -> open class Parent(val name: String)
+
+
+사용법은?
+  -> class Child(val name: String, val age: Int) : Parent(name)
+  -> val kiddo = Child("John", 3)
+  -> val adult = Parent("John")
+
+
+왜 기본적으로 상속이 불가능한가?
+-> 클래스 선언은 기본적으로 final로 되어있다. java와는 다르다.
+
+
+슈퍼클래스, 서브클래스란?
+-> 슈퍼클래스는 부모가 되는 타입.
+-> 서브클래스는 부모로부터 상속받은 타입.
+
+
+두 슈퍼클래스로부터 상속받을 수 있나?
+-> No.
+
+
+한 슈퍼클래스가 여러 서브클래스에게 상속해줄 수 있나?
+-> Yes.
+
+
+한 서브클래스가 다른 클래스에게 슈퍼클래스가 되어줄 수 있나?
+자식 클래스도 상속해줄 수 있나?
+-> Yes.
+-> 상속의 깊이 제한은 없다.
+
+
+[65. 업캐스팅]
+
+업캐스팅이란?
+-> 서브클래스 객체를 슈퍼클래스의 타입으로 가리키는 것.
+
+
+예를 들어?
+-> val parent: Parent = Child("John", 3)
+
+
+왜 이런 일이 가능한가?
+-> 서브클래스 인스턴스는 슈퍼클래스가 요구하는 모든 프로퍼티, 맴버함수를 가지기 때문.
+-> 즉, 다른 클래스와는 다르게 서브클래스는 슈퍼클래스와 형식이 맞고 + a 값을 가진다는 걸 보장하기 때문이다.
+
+
+이렇게 객체 하나가 여러 타입을 가질 수 있는 성질을 뭐라하나?
+-> Polymorphism
